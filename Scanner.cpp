@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 16:06:34 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/03 17:25:28 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/03 22:42:32 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ const std::unordered_map<std::string, token_type_t>  Scanner::keywords = {
     {"double",  TOKEN_DOUBLE},
 };
 
-Scanner::Scanner(const char *_source): source(_source), current(_source), line(1) 
+Scanner::Scanner(const char *_source): source(_source), line(1), current(_source)
 {
     curr_line_start = source;
     curr_line_end = get_line_end(curr_line_start);
@@ -166,7 +166,6 @@ bool    Scanner::skip_comments()
     }
     return false;
 }
-
 
 const char  *Scanner::get_line_end(const char *curr) const
 {
