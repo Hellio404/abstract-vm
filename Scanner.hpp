@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 14:39:06 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/03 17:19:12 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/11 23:19:17 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef enum token_type {
     TOKEN_INT8,
     TOKEN_INT16,
     TOKEN_INT32,
-    TOKEN_INT64,
     TOKEN_FLOAT,
     TOKEN_DOUBLE,
 

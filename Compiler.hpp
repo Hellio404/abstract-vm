@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:58:13 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/03 18:38:29 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/12 10:35:01 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,45 @@
 
 #include "Scanner.hpp"
 #include <iostream>
+#include <vector>
+
+
+enum Opcode {
+    OP_PUSH_i8,
+    OP_PUSH_i16,
+    OP_PUSH_i32,
+    OP_PUSH_f32,
+    OP_PUSH_f64,
+    OP_POP,
+
+    OP_ADD,
+    OP_SUB,
+    OP_MUL,
+    OP_DIV,
+    OP_MOD,
+
+    OP_ASSERT,
+    OP_PRINT,
+    OP_DUMP,
+    OP_EXIT,
+};
 
 class Compiler
 {
 private:
-    Scanner     scanner;
-    Token       current;
-    Token       previous;
+    Scanner                     scanner;
+    Token                       current;
+    Token                       previous;
+    std::vector<size_t>         constants_address;
+    std::vector<uint8_t>        constants;
+    std::vector<Token>          instruction_token;
 
     bool        panic_mode;
     uint32_t    error_nbr;
 
     Compiler() = delete;
 public:
+    std::vector<uint8_t>       instructions;
     Compiler(const Compiler&) = default;
     Compiler& operator=(const Compiler&) = default;
     ~Compiler() = default;
@@ -34,11 +60,16 @@ public:
     Compiler(const char *);
 
     bool    compile();
+    static void raise_error(const char *message, Token *token);
 private:
     void    advance();
-    void    match_type(token_type_t, const char*);
 
-    void    error(const char *message, Token *token);
+    void    write(uint8_t byte, const Token&);
+    void    write_constant(const Token&);
+
+    void    skip_sep();
+
     void    error_current(const char *message);
     void    error_previous(const char *message);
+    void    error(const char *message, Token *token);
 };

@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 16:06:34 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/03 22:42:32 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:53:02 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ Token Scanner::get_next_token()
     case ')': return create_token(TOKEN_CLOSED_PARENT);
     case ';': advance(); return create_token(TOKEN_EO_STDIN);
     case '\n':
+    {
+        Token tmp = create_token(TOKEN_SEP);
         line++;
         curr_line_start = this->current;
         curr_line_end = get_line_end(curr_line_start);
-        return create_token(TOKEN_SEP);
-    
+        return tmp;
+    }
     default:
         if (isnumber(c)) return number();
         else if (isalpha(c)) return identifier();
