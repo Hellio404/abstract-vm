@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:58:13 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/12 10:35:01 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/12 10:44:55 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include "Scanner.hpp"
 #include <iostream>
+#include <cinttypes>
 #include <vector>
 
 
@@ -46,13 +47,13 @@ private:
     std::vector<size_t>         constants_address;
     std::vector<uint8_t>        constants;
     std::vector<Token>          instruction_token;
+    std::vector<uint8_t>        instructions;
 
     bool        panic_mode;
     uint32_t    error_nbr;
 
     Compiler() = delete;
 public:
-    std::vector<uint8_t>       instructions;
     Compiler(const Compiler&) = default;
     Compiler& operator=(const Compiler&) = default;
     ~Compiler() = default;
@@ -60,6 +61,10 @@ public:
     Compiler(const char *);
 
     bool    compile();
+
+    std::vector<uint8_t>&   get_instructions();
+    std::vector<Token>&     get_instruction_token();
+
     static void raise_error(const char *message, Token *token);
 private:
     void    advance();

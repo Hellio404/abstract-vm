@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 18:38:34 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/12 10:34:43 by yfarini          ###   ########.fr       */
+/*   Updated: 2022/10/12 10:43:59 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,4 +204,15 @@ void Compiler::error_current(const char *message)
 void Compiler::error_previous(const char *message)
 {
     error(message, &previous);
+}
+
+
+std::vector<uint8_t>&   Compiler::get_instructions()
+{
+    return this->instructions;
+}
+
+std::vector<Token>&     Compiler::get_instruction_token()
+{
+    return this->instruction_token;
 }
