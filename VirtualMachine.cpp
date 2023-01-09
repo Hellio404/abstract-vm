@@ -13,6 +13,7 @@
 #include "VirtualMachine.hpp"
 
 
+
 VirtualMachine::VirtualMachine(const char *source): done(false), compiler(source)
 {
 }
@@ -32,10 +33,7 @@ bool    VirtualMachine::check_stack_size(uint32_t size, uint32_t token_index)
     return false;
 }
 
-
-void    VirtualMachine::run()
-{
-    #define DO_OPERATION(OP) \
+#define DO_OPERATION(OP) \
     do { \
         if (check_stack_size(2, i) == false)\
             return ;\
@@ -46,6 +44,8 @@ void    VirtualMachine::run()
         stack.push_back(lhs OP rhs);\
     } while (0)\
 
+void    VirtualMachine::run()
+{
     if (done) return ;
 
     done = true;
@@ -89,8 +89,10 @@ void    VirtualMachine::run()
             break;
         }
     }
-    #undef DO_OPERATION
 }
+
+#undef DO_OPERATION
+
 #include <string>
 #include <fstream>
 #include <streambuf>
