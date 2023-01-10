@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:36:19 by yfarini           #+#    #+#             */
-/*   Updated: 2023/01/10 17:26:16 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:46:00 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void VirtualMachine::run()
     catch (virtual_machine_exception &err)
     {
         size_t token_index = err.get_token_index();
-        if (token_index == -1)
+        if (token_index == -1ull)
             token_index = i;
         Compiler::raise_error(
             err.what(),
