@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:58:13 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/12 10:44:55 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:01:31 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ enum Opcode {
     OP_SUB,
     OP_MUL,
     OP_DIV,
+    OP_MIN,
+    OP_MAX,
+    OP_AVG,
+    OP_AND,
+    OP_OR,
+    OP_XOR,
     OP_MOD,
 
     OP_ASSERT,
@@ -66,6 +72,14 @@ public:
     std::vector<Token>&     get_instruction_token();
 
     static void raise_error(const char *message, Token *token);
+
+    class compiler_error: std::invalid_argument {
+    public:
+        std::string number_of_errs;
+        compiler_error(size_t);
+        ~compiler_error();
+        const char* what() const noexcept;
+    };
 private:
     void    advance();
 

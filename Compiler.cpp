@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 18:38:34 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/12 10:43:59 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:02:29 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 
 Compiler::Compiler(const char *_source) : scanner(_source), panic_mode(false), error_nbr(0)
 {
+}
+
+Compiler::compiler_error::compiler_error(size_t nbr): std::invalid_argument("compiler_error")
+{
+    this->number_of_errs = std::to_string(nbr);
+}
+
+Compiler::compiler_error::~compiler_error() {}
+
+const char* Compiler::compiler_error::what() const noexcept {
+    return this->number_of_errs.c_str();
 }
 
 bool Compiler::compile()
@@ -63,12 +74,37 @@ bool Compiler::compile()
             this->write(OP_MOD, this->previous);
             advance();
             break;
+        case TOKEN_MIN:
+            this->write(OP_MIN, this->previous);
+            advance();
+            break;
+        case TOKEN_MAX:
+            this->write(OP_MAX, this->previous);
+            advance();
+            break;
+        case TOKEN_AVG:
+            this->write(OP_AVG, this->previous);
+            advance();
+            break;
+        case TOKEN_AND:
+            this->write(OP_AND, this->previous);
+            advance();
+            break;
+        case TOKEN_OR:
+            this->write(OP_OR, this->previous);
+            advance();
+            break;
+        case TOKEN_XOR:
+            this->write(OP_XOR, this->previous);
+            advance();
+            break;
         case TOKEN_PRINT:
             this->write(OP_PRINT, this->previous);
             advance();
             break;
         case TOKEN_ERROR:
             error_previous(NULL);
+            break;
         case TOKEN_DUMP:
             this->write(OP_DUMP, this->previous);
             advance();
@@ -79,7 +115,7 @@ bool Compiler::compile()
             goto finish;
         case TOKEN_EOF:
             error_previous("Expected exit before EOF");
-            return false;
+            goto leave;
         default:
             error_previous("Invalid token");
             advance();
@@ -107,7 +143,10 @@ finish:
     // this will push the constants at the end of the instruction set
     for (auto c : this->constants)
         this->instructions.push_back(c);
-    return this->error_nbr == 0;
+leave:
+    if (this->error_nbr > 0)
+        throw compiler_error(this->error_nbr);
+    return true;
 }
 
 void Compiler::skip_sep()
@@ -139,11 +178,11 @@ void Compiler::write_constant(const Token& token)
     if (constant_type >= TOKEN_FLOAT && current.type != TOKEN_REAL_NUMBER)
         return error_current("Expected a Real Number eg. 0.0");
     else if (constant_type < TOKEN_FLOAT && current.type != TOKEN_NUMBER)
-        return error_current("Expected an Integer");
+        return error_current("Expected an Integer before this");
 
     advance();
     if (current.type != TOKEN_CLOSED_PARENT)
-        return error_current("Expected ')' for the type converter");
+        return error_previous("Expected ')' for the type converter after the number");
 
     this->write(constant_type - TOKEN_INT8 + OP_PUSH_i8, token);
     constants_address.push_back(this->instructions.size());

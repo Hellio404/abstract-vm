@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 16:06:34 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/20 17:56:48 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:17:57 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ const std::unordered_map<std::string, token_type_t>  Scanner::keywords = {
     {"mul",     TOKEN_MUL},
     {"div",     TOKEN_DIV},
     {"mod",     TOKEN_MOD},
+    {"and",     TOKEN_AND},
+    {"or",      TOKEN_OR},
+    {"xor",     TOKEN_XOR},
     {"print",   TOKEN_PRINT},
     {"exit",    TOKEN_EXIT},
     {"int8",    TOKEN_INT8},

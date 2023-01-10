@@ -1,17 +1,10 @@
-#include <iostream>
+// #include <iostream>
+// #include "OperandFactory.hpp"
+// #include "IOperand.hpp"
 
-void fn(double a) {
-    std::cout << "double" << std::endl;
-}
-
-
-
-void fn(long long a) {
-    std::cout << "long long" << std::endl;
-}
-
-int main()
-{
-    int8_t a = 69;
-    fn(a);
-}
+// int main() {
+//     IOperand const * a = get_facory().createOperand(Int8, "32");
+//     IOperand const * b = get_facory().createOperand(Int8, "-12");
+//     IOperand const * c = *a + *b;
+//     std::cout << c->toString() << std::endl;
+// }

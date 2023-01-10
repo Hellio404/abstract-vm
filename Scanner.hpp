@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 14:39:06 by yfarini           #+#    #+#             */
-/*   Updated: 2022/10/20 17:56:53 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/10 16:57:59 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ typedef enum token_type {
     TOKEN_SUB,
     TOKEN_MUL,
     TOKEN_DIV,
+    TOKEN_MIN,
+    TOKEN_MAX,
+    TOKEN_AVG,
+    TOKEN_AND,
+    TOKEN_OR,
+    TOKEN_XOR,
     TOKEN_MOD,
 
     TOKEN_INT8,
