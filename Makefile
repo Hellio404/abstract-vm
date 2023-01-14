@@ -1,8 +1,8 @@
-NAME		=	abstract-vm
+NAME		=	abstract_vm
 CXX			=	g++
 CPPFLAGS    =	-Wall -Wextra -Werror -std=c++17
 HEADS		=	Compiler.hpp Exception.hpp IOperand.hpp Operand.hpp OperandFactory.hpp Scanner.hpp Utils.hpp VirtualMachine.hpp
-SRCS		=	Compiler.cpp Exception.cpp OperandFactory.cpp Scanner.cpp Utils.cpp VirtualMachine.cpp
+SRCS		=	Compiler.cpp Exception.cpp OperandFactory.cpp Scanner.cpp Utils.cpp VirtualMachine.cpp abstract_vm.cpp
 OBJS		=	$(SRCS:.cpp=.o)
 
 all: $(NAME)
@@ -12,9 +12,9 @@ $(NAME): $(REGEX) $(OBJS)
 
 
 clean:
-	rm -rf $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
