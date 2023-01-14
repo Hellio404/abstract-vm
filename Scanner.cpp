@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 16:06:34 by yfarini           #+#    #+#             */
-/*   Updated: 2023/01/10 17:17:57 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:29:51 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ Token Scanner::get_next_token()
     char c = advance();
     switch (c)
     {
-    case '-': return create_token(TOKEN_MINUS);
+    case '-': return number(true);
     case '(': return create_token(TOKEN_OPEN_PARENT);
     case ')': return create_token(TOKEN_CLOSED_PARENT);
     case ';': advance(); return create_token(TOKEN_EO_STDIN);
@@ -119,8 +119,13 @@ Token   Scanner::error(const char* message) const
     };
 }
 
-Token   Scanner::number()
+Token   Scanner::number(bool is_negative)
 {
+    if (is_negative && !isnumber(peek()))
+        return error("expected digit after `-`");
+    else if (is_negative)
+        advance();
+        
     while (isnumber(peek()))
         advance();
     if (peek() == '.')

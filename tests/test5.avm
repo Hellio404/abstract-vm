@@ -1,0 +1,3 @@
+push int16(32 ;) ; syntax error
+pu int(32)) ; syntax error
+exit

@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 18:38:34 by yfarini           #+#    #+#             */
-/*   Updated: 2023/01/10 17:02:29 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/14 16:07:14 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,19 @@ finish:
     // this will change set the real offset of the constants
     for (auto addr : this->constants_address)
     {
-        uint16_t offset = (this->instructions[addr] | (this->instructions[addr + 1] << 8));
+        uint64_t offset = (this->instructions[addr] | (this->instructions[addr + 1] << 8)
+                        | (this->instructions[addr + 2] << 16) | (this->instructions[addr + 3] << 24));
         offset += this->instructions.size();
+        if (offset > UINT32_MAX)
+        {
+            this->error_nbr++;
+            std::cerr << "Error: cannot support more than 4GB of instructions" << std::endl;
+            goto leave;
+        }
         this->instructions[addr] = offset & 0xFF;
         this->instructions[addr + 1] = (offset >> 8) & 0xFF;
+        this->instructions[addr + 2] = (offset >> 16) & 0xFF;
+        this->instructions[addr + 3] = (offset >> 24) & 0xFF;
     }
     // this will push the constants at the end of the instruction set
     for (auto c : this->constants)
@@ -188,6 +197,8 @@ void Compiler::write_constant(const Token& token)
     constants_address.push_back(this->instructions.size());
     this->write(constants.size() & 0xFF, previous);
     this->write((constants.size() >> 8) & 0xFF, previous);
+    this->write((constants.size() >> 16) & 0xFF, previous);
+    this->write((constants.size() >> 24) & 0xFF, previous);
     constants.insert(constants.end(), previous.start, previous.start + previous.length);
     constants.push_back('\0');
 

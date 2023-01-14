@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 14:39:06 by yfarini           #+#    #+#             */
-/*   Updated: 2023/01/10 16:57:59 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:28:15 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ private:
     // given an error message create a token of type TOKEN_ERROR and set it's error field to the given error message
     Token   error(const char* message) const;
     // read a number (int or float) and return a token of type TOKEN_NUMBER or TOKEN_REAL_NUMBER depending on if the number is a floating point
-    Token   number();
+    Token   number(bool = false);
     // read an identifier, if it's an known keyword return it's type as the token type if not return a token of type error
     Token   identifier();
 

@@ -1,0 +1,2 @@
+push int16(99999999999999999999999999) ; this is an overflow error
+exit

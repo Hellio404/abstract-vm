@@ -6,7 +6,7 @@
 /*   By: yfarini <yfarini@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:36:19 by yfarini           #+#    #+#             */
-/*   Updated: 2023/01/10 17:46:00 by yfarini          ###   ########.fr       */
+/*   Updated: 2023/01/14 16:30:50 by yfarini          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,11 @@ void VirtualMachine::run()
             case OP_PUSH_f32:
             case OP_PUSH_f64:
             {
-                uint16_t offset = (instructions[i + 2] << 8) | instructions[i + 1];
+                uint32_t offset = instructions[i + 1] | (instructions[i + 2] << 8) | (instructions[i + 3] << 16) | (instructions[i + 4] << 24);
                 eOperandType type = (eOperandType)(instructions[i] - OP_PUSH_i8);
                 const IOperand *value = get_facory().createOperand(type, (char *)&instructions[offset]);
                 this->stack.push_back(value);
-                i += 2;
+                i += 4;
             }
             break;
             case OP_POP:
@@ -134,6 +134,7 @@ void VirtualMachine::run()
                 break;
             }
             default:
+                std::cerr << "Invalid instruction at " << instructions[i] << std::endl;
                 throw invalid_instruction(i);
                 break;
             }
@@ -189,11 +190,16 @@ int main(int argc, char *argv[])
     {
         // read from stdin until a line found that contains only ";;"
         std::string line;
-        while (std::getline(std::cin, line))
+        while (!std::cin.bad() && std::getline(std::cin, line))
         {
             if (line == ";;")
                 break;
             str += line + "\n";
+        }
+        if (line != ";;")
+        {
+            std::cerr << "Error: no end of input found" << std::endl;
+            return 1;
         }
     }
     else if (argc == 2)
@@ -207,6 +213,7 @@ int main(int argc, char *argv[])
         }
         str = std::string((std::istreambuf_iterator<char>(t)),
                           std::istreambuf_iterator<char>());
+        t.close();
     }
     VirtualMachine vm(str.c_str());
     vm.run();
